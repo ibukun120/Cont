@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Continents</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 ">
+
+  <div class="flex justify-center mb-32 mt-12">
+    <button class="px-4 py-2 bg-green-500 rounded" onclick="hideShow()">Click Me</button>
+  </div>
+
+
+  <div id="show" class="flex w-full justify-center items-center">
+    <table class="w-full md:w-3/4 lg:w-3/4 md:mx-auto lg:mx-auto text-center px-4">
+      <thead class="bg-gray-300">
+        <th class="p-4">Continent</th>
+        <th class="p-4">Longitude</th>
+        <th class="p-4">Latitude</th>
+      </thead>
+
+
+      <tbody id="tableRows"></tbody>
+    </table>
+  </div>
+  
+
+
+  <script>
+    let apiURL = "https://api.thecompaniesapi.com/v1/locations/continents?token=YOUR_API_TOKEN"
+
+
+    async function come(){
+      const respons = await fetch(apiURL);
+      const data = await respons.json();
+      // console.log(data);
+
+      const newData = data.continents;
+      // console.log(newData); 
+
+      const pureData = newData.map(pure => ({
+          name: pure.name,
+          longitude: pure.longitude,
+          latitude: pure.latitude
+      }))
+
+      // console.log(pureData)
+
+
+      let rows = '';
+      newData.forEach(product => {
+        rows += `<tr class="space-x-12"><td>${product.name}</td><td>${product.longitude}</td><td>${product.latitude}</td></tr>`
+
+        document.getElementById('tableRows').innerHTML = rows;
+      })
+
+
+
+      
+      
+    };
+
+    var div = document.getElementById('show');
+      var display = 0;
+
+    function hideShow(){
+      if(display == 1){
+        div.style.display = 'block';
+        display = 0;
+      }else{
+        div.style.display = 'none';
+        display = 1;
+      }
+    };
+
+
+    
+    come();
+
+    
+  </script>
+</body>
+</html>
